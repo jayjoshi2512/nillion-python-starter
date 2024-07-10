@@ -47,7 +47,7 @@ def nada_main():
     
     # Secure scalar multiplication (dummy example)
     scalar = 3
-    secure_scalar_product = scalar * SecretScalar(y.sum())
+    secure_scalar_product = scalar * y.sum().reveal()
     
     # Securely output the model parameters and evaluation metrics
     return [
@@ -79,12 +79,14 @@ def plot_results(X, y, model, title="Linear Regression Results"):
     fig.show()
 
 # Now create a main function to execute the program
-if __name__ == "__main__":
+if _name_ == "_main_":
     # Simulate input data
     data1 = np.random.rand(100, 2)
     data2 = np.random.rand(100, 2)
     
     # Define inputs for the simulation
+    party1 = Party(name="Party1")
+    party2 = Party(name="Party2")
     inputs = [
         Input(name="data1", party=party1, value=data1),
         Input(name="data2", party=party2, value=data2)
@@ -113,3 +115,21 @@ if __name__ == "__main__":
     model.fit(X_poly, y)
     
     plot_results(X_normalized, y, model)
+"""
+This program performs secure multi-party computation (MPC) for polynomial regression using nada_dsl.
+Steps:
+1. Two parties input their data securely.
+2. The data is combined, split into features (X) and target (y), and normalized.
+3. Polynomial features are generated from the normalized data.
+4. Linear regression with cross-validation is performed.
+5. The model's coefficients, intercept, mean cross-validation score, and a scalar multiplication example are securely outputted.
+6. The results are plotted using Plotly.
+
+Libraries used:
+- nada_dsl: Party, SecretArray, Input, Output, execute_nada_program, SecretArray.vstack (ensure availability in nada_dsl)
+- numpy: np.random.rand, np.vstack, np.mean
+- plotly.graph_objects: go.Scatter, go.Figure
+- sklearn.linear_model: LinearRegression
+- sklearn.preprocessing: PolynomialFeatures, StandardScaler
+- sklearn.model_selection: cross_val_score
+"""
